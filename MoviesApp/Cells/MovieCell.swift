@@ -12,16 +12,22 @@ class MovieCell: UICollectionViewCell {
     static let reuseID = "MovieCell"
     
     let movieImage = MovieImageView(frame: .zero)
-    let titleLabel = MovieTitleLabel(textAlignment: .left, fontSize: 10)
+    let titleLabel = MovieTitleLabel(textAlignment: .left, fontSize: 12)
     let descriptionLabel = DescriptionLabel(textAlignment: .left)
     
     let padding: CGFloat = 8
     
+    private let stackView: UIStackView = {
+       let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 1
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        configureMovieImage()
-        configureDescriptionLabel()
-        configureTitileLabel()
+        configureStackView()
     }
     
     required init?(coder: NSCoder) {
@@ -31,39 +37,23 @@ class MovieCell: UICollectionViewCell {
     func set(movie: Movie) {
         titleLabel.text = movie.title
         descriptionLabel.text = movie.overview
+        movieImage.downloadImage(from: movie.posterPath)
     }
     
-    private func configureMovieImage() {
-        contentView.addSubview(movieImage)
+    private func configureStackView() {
+        contentView.addSubview(stackView)
+        stackView.addArrangedSubview(movieImage)
+        stackView.addArrangedSubview(titleLabel)
+        stackView.addArrangedSubview(descriptionLabel)
         
         NSLayoutConstraint.activate([
-            movieImage.topAnchor.constraint(equalTo: contentView.topAnchor, constant: padding),
-            movieImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
-            movieImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
-            movieImage.heightAnchor.constraint(equalTo: movieImage.widthAnchor),
-        ])
-    }
-    
-    private func configureDescriptionLabel() {
-        contentView.addSubview(descriptionLabel)
-        
-        NSLayoutConstraint.activate([
-            descriptionLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -padding),
-            descriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
-            descriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
-            descriptionLabel.heightAnchor.constraint(equalToConstant: 44)
-        ])
-        
-    }
-    
-    private func configureTitileLabel() {
-        contentView.addSubview(titleLabel)
-        
-        NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: movieImage.bottomAnchor, constant: 8),
-            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
-            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
-            titleLabel.bottomAnchor.constraint(equalTo: descriptionLabel.topAnchor, constant: -12)
+
+            stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: padding),
+            stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
+            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
+            stackView.heightAnchor.constraint(equalTo: stackView.widthAnchor),
+            
+            movieImage.heightAnchor.constraint(equalToConstant: 120)
         ])
     }
 }

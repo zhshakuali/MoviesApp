@@ -25,6 +25,7 @@ class ListViewController: UIViewController {
     func configureCollectionView() {
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: UIHelper.createTwoColumnFlowLayout(in: view))
         view.addSubview(collectionView)
+        collectionView.delegate = self
         collectionView.backgroundColor = .systemBackground
         collectionView.register(MovieCell.self, forCellWithReuseIdentifier: MovieCell.reuseID)
     }
@@ -55,5 +56,12 @@ class ListViewController: UIViewController {
         snapshot.appendItems(movies)
         DispatchQueue.main.async { self.dataSource.apply(snapshot, animatingDifferences: true) }
     }
-    
+}
+
+extension ListViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let movies = movies[indexPath.item]
+        let vc = DetailsViewController(selectedMovie: movies)
+        navigationController?.pushViewController(vc, animated: true)
+    }
 }
