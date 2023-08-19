@@ -28,8 +28,9 @@ class MovieTitleLabel: UILabel {
     private func configure() {
         textColor = .label
         adjustsFontSizeToFitWidth = true
-        minimumScaleFactor = 0.1
-        //        lineBreakMode = .byTruncatingTail
+        minimumScaleFactor = 0.9
+        lineBreakMode = .byTruncatingTail
+        numberOfLines = 2
         translatesAutoresizingMaskIntoConstraints = false
     }
     

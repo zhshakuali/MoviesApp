@@ -7,7 +7,7 @@
 
 import UIKit
 struct Model: Codable {
-    let results: [Movie]
+    var results: [Movie]
 }
 
 struct Movie: Hashable, Codable {

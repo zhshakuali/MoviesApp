@@ -8,11 +8,14 @@
 import UIKit
 struct NetworkManager {
     
-    static let shared   = NetworkManager()
+    let basicURL = "https://api.themoviedb.org/"
+    let apiKey = "bcb84e23ca94f71116437bf4848a2fed"
+    static let shared = NetworkManager()
     private init() {}
     
     func getmovies(completed: @escaping(Result<Model, ErrorMessage>) -> Void) {
-        let urlString = "https://api.themoviedb.org/3/trending/movie/day?api_key=bcb84e23ca94f71116437bf4848a2fed"
+
+        let urlString = basicURL + "3/trending/movie/day?api_key=" + apiKey
         
         guard let url = URL(string: urlString) else {
             completed(.failure(.invalidMovie))
@@ -40,6 +43,8 @@ struct NetworkManager {
                 let decoder = JSONDecoder()
                 decoder.keyDecodingStrategy = .convertFromSnakeCase
                 let movies = try decoder.decode(Model.self, from: data)
+//                var movie = movies
+//                movie.results = Array(movie.results.suffix(3))
                 completed(.success(movies))
             } catch {
                 completed(.failure(.unableToComplete))
